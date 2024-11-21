@@ -103,7 +103,7 @@ ViewComponent triagers are able to manage issues and pull request by assigning o
 
 After helping with the project by participating in issues, pull requests, and/or discussions, members of the community are welcome to request triage access by opening a pull request to update this list:
 
-The triagers team is @reeganviljoen.
+The triagers team is empty.
 
 ### Commit
 
@@ -112,6 +112,7 @@ ViewComponent committers have `write` access, enabling them to push directly to 
 Triagers are welcome to request commit access by opening a pull request to update this list:
 
 There are currently no committers.
+
 
 ### Maintain
 
