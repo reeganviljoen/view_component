@@ -66,9 +66,15 @@ nav_order: 5
 
     *Reegan Viljoen*
 
+<<<<<<< HEAD
 * Updates ActionText compatibility documentation to reference `rich_textarea_tag` for Rails 8.0 support.
 
     *Alvin Crespo*
+=======
+* Add Reegan Viljoen to Commit Team
+
+    *Reegan Viljoen*
+>>>>>>> a68fc7db (add changelog entry)
 
 ## 3.20.0
 
