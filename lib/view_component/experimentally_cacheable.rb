@@ -28,7 +28,7 @@ module ViewComponent::ExperimentallyCacheable
       return @__vc_cache_options = nil unless template_key
 
       @__vc_cache_options = cache_fragment_name(
-        [:view_component, view_cache_dependencies],
+        [:view_component, I18n.locale, view_cache_dependencies],
         digest_path: __vc_component_digest_path(template_key)
       )
     end
@@ -66,6 +66,10 @@ module ViewComponent::ExperimentallyCacheable
     def record_fragment_cache(status)
       return unless Rails.application.config.view_component.instrumentation_enabled.present?
       return unless defined?(@view_renderer)
+
+      # `cache_hits` is internal (`:nodoc:`) Rails API used only to annotate the
+      # render log; feature-detect so a Rails change can't raise here.
+      return unless @view_renderer.respond_to?(:cache_hits)
 
       @view_renderer.cache_hits[@current_template&.virtual_path] = status
     end
@@ -106,7 +110,7 @@ module ViewComponent::ExperimentallyCacheable
 
       case cache_if
       when Symbol, String
-        public_send(cache_if)
+        send(cache_if)
       when Proc
         instance_exec(&cache_if)
       else
@@ -150,13 +154,6 @@ module ViewComponent::ExperimentallyCacheable
 
     def cache_if(value = nil, &block)
       self.__vc_cache_if = block || value
-    end
-
-    def inherited(child)
-      child.__vc_cache_key_block = __vc_cache_key_block
-      child.__vc_cache_if = __vc_cache_if
-
-      super
     end
   end
 end

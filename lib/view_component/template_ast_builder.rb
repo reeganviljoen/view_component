@@ -18,7 +18,13 @@ module ViewComponent
       )
 
       handler.call(template, template_string)
-    rescue
+    rescue => error
+      # Instrument rather than silently returning nil: a swallowed compile failure
+      # produces empty dependencies and stale caches. Per-handler tests guard this.
+      ActiveSupport::Notifications.instrument(
+        "template_ast_build_failed.view_component",
+        handler: handler_name, identifier: identifier, error: error
+      )
       nil
     end
   end

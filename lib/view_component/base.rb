@@ -604,6 +604,17 @@ module ViewComponent
         (sidecar_files - [identifier] + sidecar_directory_files + nested_component_files).uniq
       end
 
+      # Sidecar template files (ERB, Haml, Slim, etc.) for this component. Wraps
+      # `ActionView::Template.template_handler_extensions` so the cache digestor
+      # doesn't reach into ActionView directly.
+      #
+      # @private
+      #
+      # @return [Array<String>] Absolute paths of sidecar template files.
+      def sidecar_templates
+        sidecar_files(ActionView::Template.template_handler_extensions)
+      end
+
       # Render a component for each element in a collection ([documentation](/guide/collections)):
       #
       # ```ruby

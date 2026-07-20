@@ -27,6 +27,15 @@ module ViewComponent
       @dependencies.to_a
     end
 
+    # Scan raw Ruby source (e.g. a component's own .rb) for `render Foo.new` so a
+    # child rendered from a method still busts the parent digest. Regex-based, so a
+    # match inside a comment or string only ever over-invalidates, never serves stale.
+    def extract_component_renders
+      return [] unless @template_string&.include?("render")
+
+      extract_component_class_renders(@template_string).uniq
+    end
+
     private
 
     def extract_from_ruby(ruby_code)
